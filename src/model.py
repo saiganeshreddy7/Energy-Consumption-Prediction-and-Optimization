@@ -26,5 +26,5 @@ if __name__ == "__main__":
     model = build_model(X.shape[1])
     model.fit(X, y, epochs=10, validation_split=0.2)
     
-    model.save("../models/model_v0.1.keras")  # Save using recommended format
+    model.save("/Users/saiganeshreddykodekandla/Documents/Projects/7th-Semester_project/Energy-Consumption-Prediction/models/model_v0.1.keras")  # Save using recommended format
     print("Model training complete and saved.")
