@@ -19,11 +19,12 @@ selected_model = st.selectbox("Select Prediction Model:", models)
 
 # Simulated data storage
 live_data = []
+total_energy_kwh = 0  # Track total energy consumption
 
 # Function to generate synthetic data with additional features
 def generate_synthetic_data():
     occupancy = np.random.randint(1, 6)  # Number of people in the room
-    device_usage = np.random.randint(1, 5)  # Number of active electrical devices
+    device_usage = np.random.randint(occupancy, occupancy + 3) # Number of active electrical devices
     return {
         "T1": round(np.random.uniform(18, 30), 2),
         "RH_1": round(np.random.uniform(30, 70), 2),
@@ -58,6 +59,10 @@ def generate_synthetic_data():
         "device_usage": device_usage
     }
 
+# Function to calculate energy consumption (kWh)
+def calculate_kwh(predictions, interval_minutes=2):
+    return sum(predictions) * (interval_minutes / 60) / 1000  # Convert W to kWh
+
 # Function to generate energy-saving suggestions
 def get_energy_tips(appliances, occupancy, device_usage):
     if appliances > 500:
@@ -80,11 +85,14 @@ while True:
     
     # Send data to API
     response = requests.post(API_URL, json=data, params={"model_name": selected_model})
-    prediction = response.json().get("predicted_appliances", "N/A")
+    prediction = response.json().get("predicted_appliances", 0)
     
     # Append to live data storage
     data["predicted_appliances"] = prediction
     live_data.append(data)
+    
+    # Compute kWh consumption
+    total_energy_kwh += calculate_kwh([prediction])  # Add new reading
     
     # Convert to DataFrame for display
     df = pd.DataFrame(live_data[-10:])  # Show last 10 readings
@@ -94,6 +102,10 @@ while True:
         st.write(df)
         st.line_chart(df.set_index("hour")["predicted_appliances"])  # Show trendline
         
+        st.subheader("⚡ Total Energy Consumption (kWh)")
+        st.write(f"{total_energy_kwh:.4f} kWh")  # Display total energy used
+        
+        # Display energy-saving tips
         if prediction != "N/A":
             st.subheader("💡 Optimization Suggestion:")
             st.write(get_energy_tips(prediction, data["occupancy"], data["device_usage"]))
