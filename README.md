@@ -1,7 +1,7 @@
 # **🔌 Live Energy Consumption Prediction & Optimization**  
 
 ## **📌 Project Overview**  
-This project simulates **real-time energy consumption**, predicts energy usage using **Machine Learning**, and provides **optimization insights** through a **live dashboard**.  
+This project simulates **real-time energy consumption**, predicts energy usage using **Machine Learning**, and provides **optimization insights** through a **live dashboard**. The system uses multiple machine learning models to predict energy consumption based on various environmental factors and provides real-time optimization suggestions.
 
 ---
 
@@ -11,6 +11,41 @@ This project simulates **real-time energy consumption**, predicts energy usage u
 ✔ **FastAPI Prediction API** – Provides real-time predictions via an API.  
 ✔ **Streamlit Dashboard** – Displays live predictions and energy-saving suggestions.  
 ✔ **Optimization Insights** – Provides tips to reduce energy consumption.  
+
+---
+
+## **📁 Project Structure**
+The project consists of several key components:
+
+### **1. train_model.py**
+- Trains multiple machine learning models (Linear Regression, Random Forest, etc.)
+- Performs feature engineering and data preprocessing
+- Generates performance visualizations
+- Saves trained models and performance metrics
+
+### **2. predict_api.py**
+- FastAPI backend server for real-time predictions
+- Supports multiple ML models with model selection
+- Provides energy consumption predictions and optimization tips
+- Includes confidence levels and key contributing factors
+
+### **3. data_generator.py**
+- Simulates real-time energy consumption data
+- Generates realistic sensor readings based on time and conditions
+- Simulates different scenarios (energy efficient, high consumption, etc.)
+
+### **4. dashboard.py**
+- Interactive Streamlit dashboard
+- Real-time energy consumption monitoring
+- Historical trends and patterns visualization
+- Temperature distribution heatmap
+- Energy optimization recommendations
+
+### **Pretrained Models**
+The pretrained models are available at:
+[Google Drive Link](https://drive.google.com/drive/folders/1qvpqBlfgw3FYvUFNX8oKENjGV00x0NAw?usp=drive_link)
+
+Download and place them in the `models/` directory before running the application.
 
 ---
 
@@ -36,11 +71,9 @@ pip install -r requirements.txt
 
 ### **2️⃣ Project Startup Sequence**
 
-#### **Step 1: Open Project Folder in Terminal**
-Navigate to your project directory:
-```bash
-cd path/to/project
-```
+#### **Step 1: Download Pretrained Models**
+- Download models from the provided Google Drive link
+- Place them in the `models/` directory of the project
 
 #### **Step 2: Start the FastAPI Prediction Server**  
 In your first terminal window:
@@ -56,20 +89,7 @@ python data_generator.py
 ```
 This will simulate real-time energy consumption data every 2 seconds.
 
-#### **Step 4: Test the API (Optional)**  
-Open a new terminal tab/window and verify the API is working:
-```bash
-curl -X 'POST' 'http://127.0.0.1:8000/predict/?model_name=KNN' \
-     -H 'Content-Type: application/json' \
-     -d '{"T1": 20.5, "RH_1": 50, "T2": 19.8, "RH_2": 48, "T3": 21.2, "RH_3": 52,
-          "T4": 20.1, "RH_4": 49, "T5": 19.5, "RH_5": 47, "T6": 18.3, "RH_6": 45,
-          "T7": 22.4, "RH_7": 55, "T8": 21.8, "RH_8": 53, "T9": 20.0, "RH_9": 50,
-          "T_out": 15, "Press_mm_hg": 730, "RH_out": 40, "Windspeed": 3,
-          "Visibility": 60, "Tdewpoint": 5, "rv1": 12.5, "rv2": 13.3,
-          "hour": 14, "weekday": 3, "month": 6}'
-```
-
-#### **Step 5: Launch the Streamlit Dashboard**  
+#### **Step 4: Launch the Streamlit Dashboard**  
 Open a new terminal tab/window and run:
 ```bash
 python -m streamlit run dashboard.py
@@ -90,9 +110,6 @@ python -m streamlit run dashboard.py
 | **GET** | `/` | Check API status |  
 | **POST** | `/predict/` | Send real-time data and get energy usage prediction |  
 | **POST** | `/predict/?model_name=KNN` | Get predictions using a specific model (KNN, RF, etc.) |
-
-📌 **Example Request:**  
-See the curl example in Step 4 of the startup sequence.
 
 ---
 
