@@ -1,0 +1,128 @@
+spython train_model.py
+Loading dataset...
+Dataset shape: (19735, 29)
+Columns: ['date', 'Appliances', 'lights', 'T1', 'RH_1', 'T2', 'RH_2', 'T3', 'RH_3', 'T4', 'RH_4', 'T5', 'RH_5', 'T6', 'RH_6', 'T7', 'RH_7', 'T8', 'RH_8', 'T9', 'RH_9', 'T_out', 'Press_mm_hg', 'RH_out', 'Windspeed', 'Visibility', 'Tdewpoint', 'rv1', 'rv2']
+
+Sample data:
+                  date  Appliances  lights     T1       RH_1  ...  Windspeed  Visibility  Tdewpoint        rv1        rv2
+0  2016-01-11 17:00:00          60      30  19.89  47.596667  ...   7.000000   63.000000        5.3  13.275433  13.275433
+1  2016-01-11 17:10:00          60      30  19.89  46.693333  ...   6.666667   59.166667        5.2  18.606195  18.606195
+2  2016-01-11 17:20:00          50      30  19.89  46.300000  ...   6.333333   55.333333        5.1  28.642668  28.642668
+3  2016-01-11 17:30:00          50      40  19.89  46.066667  ...   6.000000   51.500000        5.0  45.410389  45.410389
+4  2016-01-11 17:40:00          60      40  19.89  46.333333  ...   5.666667   47.666667        4.9  10.084097  10.084097
+
+[5 rows x 29 columns]
+
+Missing values:
+date           0
+Appliances     0
+lights         0
+T1             0
+RH_1           0
+T2             0
+RH_2           0
+T3             0
+RH_3           0
+T4             0
+RH_4           0
+T5             0
+RH_5           0
+T6             0
+RH_6           0
+T7             0
+RH_7           0
+T8             0
+RH_8           0
+T9             0
+RH_9           0
+T_out          0
+Press_mm_hg    0
+RH_out         0
+Windspeed      0
+Visibility     0
+Tdewpoint      0
+rv1            0
+rv2            0
+dtype: int64
+
+Data statistics:
+         Appliances        lights            T1          RH_1  ...    Visibility     Tdewpoint           rv1           rv2
+count  19735.000000  19735.000000  19735.000000  19735.000000  ...  19735.000000  19735.000000  19735.000000  19735.000000
+mean      97.694958      3.801875     21.686571     40.259739  ...     38.330834      3.760707     24.988033     24.988033
+std      102.524891      7.935988      1.606066      3.979299  ...     11.794719      4.194648     14.496634     14.496634
+min       10.000000      0.000000     16.790000     27.023333  ...      1.000000     -6.600000      0.005322      0.005322
+25%       50.000000      0.000000     20.760000     37.333333  ...     29.000000      0.900000     12.497889     12.497889
+50%       60.000000      0.000000     21.600000     39.656667  ...     40.000000      3.433333     24.897653     24.897653
+75%      100.000000      0.000000     22.600000     43.066667  ...     40.000000      6.566667     37.583769     37.583769
+max     1080.000000     70.000000     26.260000     63.360000  ...     66.000000     15.500000     49.996530     49.996530
+
+[8 rows x 28 columns]
+Performing feature engineering...
+
+Top 10 features correlated with Appliances:
+Appliances       1.000000
+day_period       0.230648
+hour             0.216792
+lights           0.197278
+T2               0.120073
+T6               0.117638
+T_out            0.099155
+temp_diff_avg    0.097816
+Windspeed        0.087122
+RH_1             0.086031
+Name: Appliances, dtype: float64
+
+Training models with hyperparameter tuning...
+Training LinearRegression...
+LinearRegression - RMSE: 92.22, MAE: 53.20, R²: 0.1501
+Model saved as models/LinearRegression.pkl
+Training Ridge...
+Best parameters for Ridge: {'alpha': 10.0}
+Ridge - RMSE: 92.21, MAE: 53.16, R²: 0.1503
+Model saved as models/Ridge.pkl
+Training Lasso...
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.633e+07, tolerance: 1.304e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.633e+07, tolerance: 1.335e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.772e+07, tolerance: 1.359e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.689e+07, tolerance: 1.369e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.704e+07, tolerance: 1.350e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.580e+07, tolerance: 1.304e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.596e+07, tolerance: 1.335e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.663e+07, tolerance: 1.359e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.648e+07, tolerance: 1.369e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.542e+07, tolerance: 1.350e+04
+  model = cd_fast.enet_coordinate_descent(
+/Users/saiganeshreddykodekandla/Documents/projects/project7/project7we/.venv/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 2.031e+07, tolerance: 1.679e+04
+  model = cd_fast.enet_coordinate_descent(
+Best parameters for Lasso: {'alpha': 0.01}
+Lasso - RMSE: 92.22, MAE: 53.18, R²: 0.1501
+Model saved as models/Lasso.pkl
+Training SGDRegressor...
+Best parameters for SGDRegressor: {'alpha': 0.01, 'penalty': 'l1'}
+SGDRegressor - RMSE: 92.73, MAE: 53.24, R²: 0.1407
+Model saved as models/SGDRegressor.pkl
+Training KNN...
+Best parameters for KNN: {'n_neighbors': 7, 'weights': 'distance'}
+KNN - RMSE: 77.16, MAE: 37.35, R²: 0.4050
+Model saved as models/KNN.pkl
+Training RandomForest...
+Best parameters for RandomForest: {'max_depth': None, 'n_estimators': 100}
+RandomForest - RMSE: 63.55, MAE: 29.89, R²: 0.5965
+Model saved as models/RandomForest.pkl
+Training GradientBoosting...
+Best parameters for GradientBoosting: {'learning_rate': 0.1, 'n_estimators': 100}
+GradientBoosting - RMSE: 84.51, MAE: 46.09, R²: 0.2863
+Model saved as models/GradientBoosting.pkl
+
+Model training and evaluation complete!
+Performance metrics saved to models/performance_metrics.json
+Visualizations saved to the visualizations directory
