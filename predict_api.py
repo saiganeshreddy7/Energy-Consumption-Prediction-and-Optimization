@@ -119,12 +119,16 @@ class PredictionInput(BaseModel):
                 "occupancy": 3, "device_usage": 5, "lights": 30
             }
         }
+class Factor(BaseModel):
+    name: str
+    value: float
+
 class PredictionOutput(BaseModel):
     model: str
     predicted_appliances: float
     confidence_level: str
     energy_profile: str
-    factors: List[Dict[str, float]]
+    factors: List[Factor]
     optimization_tips: List[str]
 
 @app.get("/")
@@ -162,7 +166,7 @@ def predict_energy(
         )
 
     # Prepare input data
-    input_dict = data.dictt()
+    input_dict = data.dict()
     
     # Extract optional fields
     occupancy = input_dict.pop("occupancy", None)
@@ -250,15 +254,15 @@ def predict_energy(
         sorted_idx = np.argsort(importances)[::-1]
         
         # Only keep numerical features in factors
-        top_features = [(features[i], importances[i]) for i in sorted_idx[:5] if isinstance(importances[i], (int, float))]
-        factors = [{"factor": feature, "importance": float(importance)} for feature, importance in top_features]
+        top_features = [(features[i], float(importances[i])) for i in sorted_idx[:5] if isinstance(importances[i], (int, float))]
+        factors = [Factor(name=feature, value=importance) for feature, importance in top_features]
 
     # For linear models
     elif hasattr(model, 'coef_'):
         coefs = model.coef_
         sorted_idx = np.argsort(np.abs(coefs))[::-1]
-        top_features = [(features[i], coefs[i]) for i in sorted_idx[:5]]
-        factors = [{"factor": feature, "impact": float(coef)} for feature, coef in top_features]
+        top_features = [(features[i], float(coefs[i])) for i in sorted_idx[:5]]
+        factors = [Factor(name=feature, value=coef) for feature, coef in top_features]
     
     # Generate optimization tips
     tips = []
@@ -296,11 +300,13 @@ def predict_energy(
             "Consider using smart power strips to manage multiple devices."
         ]
     
-    return {
-        "model": model_name,
-        "predicted_appliances": prediction,
-        "confidence_level": confidence_level,
-        "energy_profile": energy_profile,
-        "factors": factors,
-        "optimization_tips": tips
-    }
+    # Create response using the model
+    response = PredictionOutput(
+        model=model_name,
+        predicted_appliances=prediction,
+        confidence_level=confidence_level,
+        energy_profile=energy_profile,
+        factors=factors,
+        optimization_tips=tips
+    )
+    return response

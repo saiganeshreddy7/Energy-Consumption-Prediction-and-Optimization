@@ -5,7 +5,7 @@ import requests
 from datetime import datetime
 
 # FastAPI URL
-API_URL = "http://127.0.0.1:8000"
+API_URL = "http://127.0.0.1:8000/predict"
 
 # Function to generate synthetic data with expanded features
 def generate_synthetic_data():
@@ -166,25 +166,9 @@ if __name__ == "__main__":
             synthetic_data = generate_synthetic_data()
             print(f"Generated Data: {synthetic_data['hour']}h, {synthetic_data['T_avg']:.1f}°C indoor, {synthetic_data['RH_avg']:.1f}% RH")
             
-            # Prepare API data (remove fields not expected by the API if needed)
-            api_data = {k: v for k, v in synthetic_data.items() 
-                        if k in ["T1", "RH_1", "T2", "RH_2", "T3", "RH_3", "T4", "RH_4", "T5", "RH_5",
-                               "T6", "RH_6", "T7", "RH_7", "T8", "RH_8", "T9", "RH_9", "T_out", "Press_mm_hg",
-                               "RH_out", "Windspeed", "Visibility", "Tdewpoint", "rv1", "rv2",
-                               "hour", "weekday", "month", "occupancy", "device_usage", "lights"]}
-
-            required_features = [
-                "T1", "RH_1", "T2", "RH_2", "T3", "RH_3", "T4", "RH_4", "T5", "RH_5",
-                "T6", "RH_6", "T7", "RH_7", "T8", "RH_8", "T9", "RH_9", "T_out", "Press_mm_hg",
-                "RH_out", "Windspeed", "Visibility", "Tdewpoint", "rv1", "rv2",
-                "hour", "weekday", "month", "season", "is_weekend", "day_period", 
-                "temp_diff_avg", "T_avg", "RH_avg"
-            ]
             # Send data to API
-            
             try:
-                api_data = {key: synthetic_data[key] for key in required_features if key in synthetic_data}
-                response = requests.post(API_URL, json=api_data, params={"model_name": "RandomForest"})
+                response = requests.post(API_URL, json=synthetic_data, params={"model_name": "RandomForest"})
                 if response.status_code == 200:
                     prediction = response.json()
                     print(f"Prediction: {prediction['predicted_appliances']:.2f} Wh - {prediction['energy_profile']} consumption")
